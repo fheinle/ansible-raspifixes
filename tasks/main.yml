@@ -1,0 +1,90 @@
+---
+- name: Update Timezone to Europe/Berlin
+  copy: content="Europe/Berlin\n" dest=/etc/timezone owner=root group=root mode=0644
+  become: true
+  register: timezone
+
+- name: Reconfigure Timezone Data
+  shell: dpkg-reconfigure -f noninteractive tzdata
+  become: true
+  when: timezone.changed
+
+- name: select keyboard layout
+  become: true
+  lineinfile:
+    dest=/etc/default/keyboard
+    regexp="^XKBLAYOUT"
+    line="XKBLAYOUT=\"{{ keyboardlanguage }}\""
+
+- name: install mosh for ssh
+  become: true
+  apt:
+    name=mosh
+    state=installed
+    update_cache=yes
+    cache_valid_time=3600
+
+- name: create additional system users
+  become: true
+  user:
+    name={{ item.name }}
+    state={{ item.state }}
+    shell={{ item.shell }}
+    group={{ item.group }}
+    groups={{ item.groups }}
+    append=true
+  with_items: "{{ system_users }}"
+
+- name: install ssh keys for additional system users
+  become: true
+  authorized_key:
+    user={{ item.0.name }}
+    key={{ item.1 }}
+    state=present
+    manage_dir=yes
+  with_subelements:
+    - vault_system_users
+    - sshkeys
+
+- name: enable tmpfs settings
+  become: true
+  lineinfile:
+    dest=/etc/default/tmpfs
+    regexp="^\#{{ item }}"
+    line="{{ item }}=yes"
+  with_items:
+    - RAMLOCK
+    - RAMSHM
+    - RAMTMP
+
+- name: set tmpfs size preferences
+  become: true
+  lineinfile:
+    dest=/etc/default/tmpfs
+    regexp="^\#{{ item.name }}"
+    line="{{ item.name }}={{ item.value }}"
+  with_items: "{{ tmpfssizes }}"
+
+- name: set tmpfs mount points in fstab
+  become: true
+  mount:
+    name="{{ item.mountpoint }}"
+    src="tmpfs"
+    opts="{{ item.opts }},defaults,mode=0755"
+    state=present
+    fstype="tmpfs"
+  with_items: "{{ tmpfsfstab }}"
+
+- name: install script to create log directories on boot
+  become: true
+  copy:
+    src="logdirectories.sh"
+    dest="/etc/init.d/prepare-dirs"
+    owner=root
+    group=root
+    mode=0755
+
+- name: enable script to create log directories on boot
+  become: true
+  command: update-rc.d prepare-dirs defaults 01 99
+    creates=/etc/rc2.d/S01prepare-dirs

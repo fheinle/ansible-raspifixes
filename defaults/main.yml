@@ -1,0 +1,12 @@
+---
+
+tmpfssizes:
+  - {"name":"TMPFS_SIZE", "value":"10%VM"}
+  - {"name":"RUN_SIZE",   "value":"10M"}
+  - {"name":"LOCK_SIZE",  "value":"5M"}
+  - {"name":"SHM_SIZE",   "value":"10M"}
+  - {"name":"TMP_SIZE",   "value":"25M"}
+
+tmpfsfstab:
+  - {"mountpoint":"/var/log", "opts":"size=20M,noatime"}
+  - {"mountpoint":"/var/cache/apt/archives", "opts":"size=100M,noexec,nosuid,nodev"}
