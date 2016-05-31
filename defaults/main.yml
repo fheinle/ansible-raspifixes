@@ -10,3 +10,5 @@ tmpfssizes:
 tmpfsfstab:
   - {"mountpoint":"/var/log", "opts":"size=20M,noatime"}
   - {"mountpoint":"/var/cache/apt/archives", "opts":"size=100M,noexec,nosuid,nodev"}
+
+keyboardlanguage: us
