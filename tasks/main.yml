@@ -24,6 +24,14 @@
     update_cache=yes
     cache_valid_time=3600
 
+- name: install rsync
+  become: true
+  apt:
+    name=mosh
+    state=installed
+    update_cache=yes
+    cache_valid_time=3600
+
 - name: enable tmpfs settings
   become: true
   lineinfile:
