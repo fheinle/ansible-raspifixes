@@ -48,6 +48,14 @@
     update_cache=yes
     cache_valid_time=3600
 
+- name: install lsof
+  become: true
+  apt:
+    name=lsof
+    state=installed
+    update_cache=yes
+    cache_valid_time=3600
+
 - name: enable tmpfs settings
   become: true
   replace:
