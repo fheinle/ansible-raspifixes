@@ -56,6 +56,12 @@
     update_cache=yes
     cache_valid_time=3600
 
+- name: generate German locales
+  become: true
+  locale_gen:
+    name="de_DE.UTF-8"
+    state=present
+
 - name: enable tmpfs settings
   become: true
   replace:
