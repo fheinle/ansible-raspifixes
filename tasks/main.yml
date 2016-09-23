@@ -40,6 +40,14 @@
     update_cache=yes
     cache_valid_time=3600
 
+- name: "install rdiff backup"
+  become: true
+  apt:
+    name="rdiff-backup"
+    state=installed
+    update_cache=yes
+    cache_valid_time=3600
+
 - name: enable tmpfs settings
   become: true
   replace:
