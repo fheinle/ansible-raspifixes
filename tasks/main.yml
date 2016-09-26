@@ -91,6 +91,15 @@
     fstype="tmpfs"
   with_items: "{{ tmpfsfstab }}"
 
+- name: enable acl for root directory
+  become: true
+  mount:
+    name="/"
+    src="/dev/mmcblk0p2"
+    opts="defaults,noatime,acl"
+    state=present
+    fstype=ext4
+
 - name: install script to create log directories on boot
   become: true
   copy:
