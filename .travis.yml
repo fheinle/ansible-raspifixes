@@ -38,7 +38,8 @@ script:
   - grep -q "tmpfs /var/log" /etc/fstab
   - grep -q acl /etc/fstab
   # did it delete the pi user?
-  - "id pi &> /dev/null"
+  # desired return code of id pi is 1
+  - "! id pi &> /dev/null"
 
 notifications:
   slack: suedseite:y3ypqbTi5Mhr8YGSw5ccVLa2
