@@ -5,6 +5,8 @@ python: "2.7"
 
 before_install:
   - sudo apt-get update -qq
+  # comes with debian's initscripts
+  - touch /etc/default/tmpfs
 
 install:
   # Install Ansible.
