@@ -11,15 +11,16 @@
 
 case "${1:-''}" in
   start)
-      for DIRECTORY in fsck ntpstats apt samba/cores
+      for DIRECTORY in fsck ntpstats apt samba/cores apache2
       do
           mkdir -p /var/log/$DIRECTORY
       done
-      chmod 755 /var/log/{fsck,apt,ntpstats}
+      chmod 755 /var/log/{fsck,apt,ntpstats,apache2}
       chmod 750 /var/log/samba
       chmod 700 /var/log/samba/cores
       chown ntp:ntp /var/log/ntpstats
       chown root:adm /var/log/samba
+      chown root:adm /var/log/apache2
       ;;
   stop)
       ;;
