@@ -16,45 +16,14 @@
     regexp="^XKBLAYOUT"
     line="XKBLAYOUT=\"{{ keyboardlanguage }}\""
 
-- name: install screen
+- name: install useful packages
   become: true
   apt:
-    name=screen
+    name="{{ item }}"
     state=installed
     update_cache=yes
     cache_valid_time=3600
-
-- name: install mosh for ssh
-  become: true
-  apt:
-    name=mosh
-    state=installed
-    update_cache=yes
-    cache_valid_time=3600
-
-- name: install rsync
-  become: true
-  apt:
-    name=rsync
-    state=installed
-    update_cache=yes
-    cache_valid_time=3600
-
-- name: "install rdiff backup"
-  become: true
-  apt:
-    name="rdiff-backup"
-    state=installed
-    update_cache=yes
-    cache_valid_time=3600
-
-- name: install lsof
-  become: true
-  apt:
-    name=lsof
-    state=installed
-    update_cache=yes
-    cache_valid_time=3600
+  with items: "{{ useful_packages }}"
 
 - name: generate German locales
   become: true

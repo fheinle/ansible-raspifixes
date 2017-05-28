@@ -12,3 +12,13 @@ tmpfsfstab:
   - {"mountpoint":"/var/cache/apt/archives", "opts":"size=100M,noexec,nosuid,nodev"}
 
 keyboardlanguage: us
+
+useful_packages:
+  - tmux
+  - mosh
+  - rsync
+  - "rdiff-backup"
+  - lsof
+  - iperf
+  - nmap
+  - iftop
