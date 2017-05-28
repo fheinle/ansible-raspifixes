@@ -5,7 +5,7 @@
   register: timezone
 
 - name: Reconfigure Timezone Data
-  shell: dpkg-reconfigure -f noninteractive tzdata
+  command: dpkg-reconfigure -f noninteractive tzdata
   become: true
   when: timezone.changed
 
